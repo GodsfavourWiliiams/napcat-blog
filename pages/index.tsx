@@ -32,6 +32,12 @@ export default function Home({ posts }: Props) {
         const postIndex = updatedPosts.findIndex(post => post._id === id);
         updatedPosts[postIndex].isArchived = true;
         setData(updatedPosts);
+        
+await sanityClient
+        .patch(id)
+        .set({ isArchived: true })
+        .commit();
+
       } else {
         alert('Error archiving post');
       }
@@ -126,13 +132,3 @@ export const getServerSideProps = async () => {
   };
 
 };
-
-// export async function getStaticProps() {
-//   const posts = await sanityClient
-//     .fetch('*[_type == "post"]')
-//     .then((data) => data.map((post: any) => ({ ...post, id: post._id })));
-
-//   return {
-//     props: { posts },
-//   };
-// }

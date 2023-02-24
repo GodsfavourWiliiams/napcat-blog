@@ -19,7 +19,7 @@ export default defineType({
     defineField({
       name: 'isArchived',
       title: 'Is Archived',
-      type: 'boolean',
+      type: boolean,
     }),
     defineField({
       name: 'slug',
