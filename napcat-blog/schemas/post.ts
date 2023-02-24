@@ -1,4 +1,5 @@
-import {defineField, defineType} from 'sanity'
+import {defineField, defineType} from 'sanity';
+
 
 export default defineType({
   name: 'post',
@@ -9,6 +10,16 @@ export default defineType({
       name: 'title',
       title: 'Title',
       type: 'string',
+    }), 
+    defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'string',
+    }), 
+    defineField({
+      name: 'isArchived',
+      title: 'Is Archived',
+      type: 'boolean',
     }),
     defineField({
       name: 'slug',
@@ -56,10 +67,22 @@ export default defineType({
       title: 'title',
       author: 'author.name',
       media: 'mainImage',
+      publishedAt: 'publishedAt',
+      archived: 'archived',
+      selection: 'selection'
     },
-    prepare(selection) {
+    prepare({ title, publishedAt, selection, archived, media }) {
       const {author} = selection
-      return {...selection, subtitle: author && `by ${author}`}
+      const date = new Date(publishedAt).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      })
+      return {
+        ...selection,
+        subtitle: `${author ? `by ${author}` : ''} ${archived ? 'Archived' : 'Published'} on ${new Date(date).toLocaleDateString()}`
+      };
+      
     },
   },
 })

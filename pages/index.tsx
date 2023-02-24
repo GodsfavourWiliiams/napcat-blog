@@ -1,19 +1,48 @@
-import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 import Header from '@/component/header';
 import Footer from '@/component/footer';
-
 import { sanityClient, urlFor } from "../sanity";
 import { Post } from "../typings";
+import { useState } from 'react';
 
 interface Props {
   posts: [Post];
 }
 
 export default function Home({ posts }: Props) {
-  console.log(posts);
+  
+  const [isArchiving, setIsArchiving] = useState(false);
+  const activePosts = posts.filter((post) => !post.isArchived);
+  const [data, setData] = useState<Post[]>([]);
+  console.log('active:', activePosts);
+
+
+  const handleArchive = async (id: string) => {
+    setIsArchiving(true);
+  
+    try {
+      const response = await fetch(`/api/archive-post?id=${id}`, {
+        method: 'POST'
+      });
+  
+      if (response.ok) {
+        const updatedPosts = [...posts];
+        const postIndex = updatedPosts.findIndex(post => post._id === id);
+        updatedPosts[postIndex].isArchived = true;
+        setData(updatedPosts);
+      } else {
+        alert('Error archiving post');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Error archiving post');
+    }
+  
+    setIsArchiving(false);
+  };
+  
 
   return (
     <>
@@ -37,9 +66,9 @@ export default function Home({ posts }: Props) {
       {/* posts */}
       <div
         className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 md:gap-6 md:p-6 mx-auto max-w-[1300px]">
-        {posts.map((post) => (
-          <Link key={post._id} href={`/post/${post.slug.current}`}>
-            <div className="hover:bg-gray-100 p-5 rounded-md">
+        {activePosts.map((post) => (
+          <div key={post._id} className='h-full'>
+            <div className="hover:bg-gray-100 p-5 rounded-md h-full">
                 <div className="">
                   <img
                     src={urlFor(post.mainImage).url()!} 
@@ -47,16 +76,22 @@ export default function Home({ posts }: Props) {
                     alt=""
                   />
                 </div>
-                <div className="py-5">
-                    <h2 className="text-lg font-bold" title={post.description}>{post.title}</h2>
+                <Link href={`/post/${post.slug.current}`}>
+                  <div className="py-5">
+                     <h2 className="text-lg font-bold" title={post.description}>{post.title}</h2>
                     <p className="text-base bg-gray-500" title={post.description}>{post.description}</p>
-                </div>
+                  </div>
+                   
+                </Link>
                 <div className="">
                   <span>{post._createdAt}</span>
+                  <button onClick={() => handleArchive(post._id)} disabled={isArchiving} className=''>
+                    {isArchiving ? 'Archiving...' : 'Archive'}
+                  </button>
                 </div>
               </div>
             
-          </Link>
+          </div>
         ))}
       </div>
 
@@ -80,6 +115,7 @@ export const getServerSideProps = async () => {
  ],
     description,
     mainImage,
+    isArchived,
     slug
   }`;
   const posts = await sanityClient.fetch(query);
@@ -88,4 +124,15 @@ export const getServerSideProps = async () => {
       posts,
     },
   };
+
 };
+
+// export async function getStaticProps() {
+//   const posts = await sanityClient
+//     .fetch('*[_type == "post"]')
+//     .then((data) => data.map((post: any) => ({ ...post, id: post._id })));
+
+//   return {
+//     props: { posts },
+//   };
+// }

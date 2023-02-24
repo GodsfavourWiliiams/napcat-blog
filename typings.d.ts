@@ -1,6 +1,7 @@
 export interface Post{
     _id: string;
     _createdAt: string;
+    isArchived: boolean;
     title: string;
     author:{
         name:string;
