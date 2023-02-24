@@ -5,7 +5,7 @@ type Props = {}
 
 const header = (props: Props) => {
   return (
-    <div className=" bg-transparent backdrop-blur w-full py-4 w-full">
+    <div className="bg-transparent backdrop-blur w-full py-4 w-full">
         <div className="flex items-center justify-between  mx-auto max-w-[1300px] px-2 sm:px-6 lg:px-8 w-full" >
           <div className="flex items-center ">
             <Link href='/' className="flex flex-shrink-0 items-center font-extrabold text-3xl">
