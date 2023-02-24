@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
-import Header from '@/component/header';
+import Header from '../component/header';
 import Footer from '@/component/footer';
 import { sanityClient, urlFor } from "../lib/sanity";
 import { Post } from "../typings";
@@ -33,10 +33,7 @@ export default function Home({ posts }: Props) {
         updatedPosts[postIndex].isArchived = true;
         setData(updatedPosts);
         
-await sanityClient
-        .patch(id)
-        .set({ isArchived: true })
-        .commit();
+        await sanityClient.patch(id).set({ isArchived: true }).commit();
 
       } else {
         alert('Error archiving post');
@@ -56,9 +53,9 @@ await sanityClient
         <title>Napcat Blog</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <Header />
-      <div className="px-10 mx-auto space-y-5 bg-gray-100 sm:p-10">
+    <div className="">
+      <div className="px-8 space-y-5 bg-gray-100 sm:p-10">
         <div className="mx-auto max-w-7xl">
           <h1 className="max-w-xl font-sans text-3xl">
             Napcat Blog 
@@ -100,6 +97,8 @@ await sanityClient
           </div>
         ))}
       </div>
+    </div>
+      
 
       <Footer />
     </>

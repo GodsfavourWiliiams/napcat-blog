@@ -49,7 +49,7 @@ function Post({ post }: Props) {
   };
 
   return (
-    <main className="max-w-7xl mx-auto" >
+    <main className="" >
         <Head>
           <title>{post.title}</title>
           <link rel="icon" href="/favicon.ico" />
@@ -58,7 +58,7 @@ function Post({ post }: Props) {
       <Header />
      
       
-      <article className="font-sans p-5">
+      <article className="font-sans p-5 max-w-7xl mx-auto">
         <h1 className="mt-10 mb-3 text-3xl font-bold">{post.title}</h1>
         <h2 className="mb-2 text-2xl font-medium text-gray-300">
           {post.description}
