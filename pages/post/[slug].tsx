@@ -1,5 +1,5 @@
 import React from "react";
-import { sanityClient, urlFor } from "../../sanity";
+import { sanityClient, urlFor } from "../../lib/sanity";
 import { Post } from "../../typings";
 import Header from "../../component/header";
 import { GetStaticProps } from "next";

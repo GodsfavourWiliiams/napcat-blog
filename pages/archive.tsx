@@ -1,5 +1,5 @@
 import { Post } from '../typings';
-import { urlFor } from '../sanity';
+import { urlFor } from '../lib/sanity';
 import Link from 'next/link';
 
 interface Props {

@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Header from '@/component/header';
 import Footer from '@/component/footer';
-import { sanityClient, urlFor } from "../sanity";
+import { sanityClient, urlFor } from "../lib/sanity";
 import { Post } from "../typings";
 import { useState } from 'react';
 
